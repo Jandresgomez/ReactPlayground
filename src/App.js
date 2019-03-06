@@ -4,13 +4,28 @@ import Person from './Person/Person.js';
 import './App.css';
 
 class App extends Component {
-  state = {
-    persons: [
-      { name: 'Laura', age: 23 },
-      { name: 'Max', age: 31 },
-      { name: 'Steven', age: 27 }
-    ]
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      persons: [
+        { name: 'Laura', age: 23 },
+        { name: 'Max', age: 31 },
+        { name: 'Steven', age: 27 }
+      ]
+    };
+    this.input = React.createRef();
+  }
+
+  switchNameHandler = () => {
+    this.setState({
+      persons: [
+        { name: this.input.current.value, age: 23 },
+        { name: 'Max', age: 31 },
+        { name: 'Steven', age: 27 }
+      ]
+    });
+  }
 
   render() {
     let personList = [];
@@ -23,7 +38,10 @@ class App extends Component {
       <div className="App">
         <h1>I am a React Playground!</h1>
         {personList}
-        <button>Switch Name</button>
+        <form action="">
+          <input type="text" name="firstname" ref={this.input} defaultValue="John"></input>
+        </form>
+        <button onClick={this.switchNameHandler}>Switch Name</button>
       </div>
     );
   }
