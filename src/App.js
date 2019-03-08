@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import Person from './Person/Person.js';
 import './App.css';
+import './Person/Person.css'
 
 class App extends Component {
   constructor(props) {
@@ -9,39 +10,67 @@ class App extends Component {
 
     this.state = {
       persons: [
-        { name: 'Laura', age: 23 },
+        { name: 'Laura', age: 23 },+
         { name: 'Max', age: 31 },
         { name: 'Steven', age: 27 }
       ]
     };
-    this.input = React.createRef();
   }
 
-  switchNameHandler = () => {
+  switchNameHandler = (newName) => { 
     this.setState({
       persons: [
-        { name: this.input.current.value, age: 23 },
+        { name: newName, age: 23 },
         { name: 'Max', age: 31 },
+        { name: 'Steven', age: 27 }  
+      ]
+    });
+  }
+
+  nameChangedHandler = (event) => {
+    this.setState({
+      persons: [
+        { name: 'Laura', age: 23 },
+        { name: event.target.value, age: 31 },
         { name: 'Steven', age: 27 }
       ]
     });
   }
 
   render() {
-    let personList = [];
     const persons = this.state.persons;
-    for(let i = 0; i < persons.length; i++) {
-      personList.push(<Person name={persons[i].name} age={persons[i].age}/>);
+
+    const buttonStyle = {
+      backgroundColor: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '8px',
+      cursor: 'pointer'
     }
 
     return (
       <div className="App">
         <h1>I am a React Playground!</h1>
-        {personList}
-        <form action="">
-          <input type="text" name="firstname" ref={this.input} defaultValue="John"></input>
-        </form>
-        <button onClick={this.switchNameHandler}>Switch Name</button>
+        <Person 
+        name={persons[0].name} 
+        age={persons[0].age} 
+        click={this.switchNameHandler.bind(this, "WithBind")}
+        />
+        <Person 
+        name={persons[1].name} 
+        age={persons[1].age} 
+        changed={this.nameChangedHandler}
+        />
+        <Person 
+        name={persons[2].name} 
+        age={persons[2].age} 
+        />
+        <button 
+        style={buttonStyle}
+        onClick={() => this.switchNameHandler("WithCallback")}
+        >
+        Switch Name
+        </button>
       </div>
     );
   }
